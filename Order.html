@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyrise Decor - Shopping Cart</title>
+    <link rel="stylesheet" href="Order.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <a href="Menu.html" class="back-home">
+        <img src="Back Arrow.png" alt="Back">
+    </a>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="container">
+            <!-- PAGE TITLE -->
+            <div class="page-title">
+                <h1>CART PAGE</h1>
+            </div>
+
+            <!-- CART TABLE & SUMMARY -->
+            <div class="cart-container">
+                <!-- Cart Items Table -->
+                <div class="cart-table">
+                    <div class="table-header">
+                        <div>Product</div>
+                        <div>Quantity</div>
+                        <div>Total</div>
+                        <div>Action</div>
+                    </div>
+
+                    <!-- Cart items will be dynamically added here -->
+                    <div id="cart-items"></div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">P0.00</span>
+                    </div>
+                    <div class="summary-row" id="delivery-fee-row">
+                        <span>Delivery fee</span>
+                        <span id="delivery-fee">P20.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total">P0.00</span>
+                    </div>
+                    <div class="delivery-options">
+                        <h3>Choose Delivery Option</h3>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="delivery" value="delivery" checked>
+                                <span class="radio-icon">🚚</span>
+                                <span class="radio-title">Delivery</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="delivery" value="collection">
+                                <span class="radio-icon">🏪</span>
+                                <span class="radio-title">Collection</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="summary-actions">
+                        <a href="Menu.html" class="btn-primary update-cart">Continue Shopping</a>
+                        <button class="btn-primary checkout">Checkout Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Load and display cart items
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItemsContainer = document.getElementById('cart-items');
+        const subtotalEl = document.getElementById('subtotal');
+        const deliveryFeeEl = document.getElementById('delivery-fee');
+        const totalEl = document.getElementById('total');
+        const deliveryFeeRow = document.getElementById('delivery-fee-row');
+        const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
+
+        function getImageSrc(name) {
+            // Map item names to image sources (you may need to adjust these)
+            const imageMap = {
+                'Espresso': 'Espresso-Cup.png',
+                'Double Espresso': 'DoubleEspresso-Cup.png',
+                'Americano': 'Americano-Cup.png',
+                'Flat White': 'FlatWhite-Cup.png',
+                'Cafe Latte': 'CafeLatte-Cup.png',
+                'Macchiato': 'Macchiato-Cup.png',
+                'Cappuccino': 'Cappuccino-Cup.png',
+                'Frappuccino': 'Frappuccino-Cup.png',
+                'Affogato': 'ColdAffogato-Cup.png',
+                'Cold Macchiato': 'ColdMacchiato-Cup.png',
+                'Cold Cappuccino': 'ColdCappuccino-Cup.png',
+                'Cold Frappuccino': 'ColdFrappuccino-Cup.png',
+                'Sandwich': 'sandwich.jpeg', // Placeholder
+                'Special Burger': 'Special Burger.jpeg', // Placeholder
+                'Beef Burger': 'burger.jpeg', // Placeholder
+                'Beef Sandwich': 'Beef Sandwich.jpeg', // Placeholder
+                'Chicken Sandwich': 'Chicken Sandwich.jpeg', // Placeholder
+                'Tuna Sandwich': 'Tuna Sandwich.jpeg', // Placeholder
+                'Chocolate Waffle': 'Chocolate Waffle.jpeg', // Placeholder
+                'Strawberry Waffle': 'Straw Berry Waffle.jpeg', // Placeholder
+                'Chocolate Cake': 'cake.jpeg', // Placeholder
+                'Ice Cream': 'icecream.jpeg', // Placeholder
+                'Chocolate Pudding': 'Chocolate Pudding.jpeg', // Placeholder
+                'Strawberry Pudding': 'Strawberry Pudding.jpeg' // Placeholder
+            };
+            return imageMap[name] || 'default.png'; // Fallback image
+        }
+
+        function displayCart() {
+            cartItemsContainer.innerHTML = '';
+            cart.forEach((item, index) => {
+                const itemTotal = (parseFloat(item.price) * item.quantity).toFixed(2);
+                const row = document.createElement('div');
+                row.className = 'table-row';
+                row.innerHTML = `
+                    <div class="product-info">
+                        <img src="${getImageSrc(item.name)}" alt="${item.name}" class="product-image">
+                        <div class="product-details">
+                            <h3>${item.name}</h3>
+                            <p>P${item.price}</p>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="qty-btn" onclick="changeQuantity(${index}, -1)">-</button>
+                        <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)">
+                        <button class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                    </div>
+                    <div class="price">P${itemTotal}</div>
+                    <button class="remove-btn" onclick="removeItem(${index})">×</button>
+                `;
+                cartItemsContainer.appendChild(row);
+            });
+            updateSummary();
+        }
+
+        function changeQuantity(index, delta) {
+            cart[index].quantity += delta;
+            if (cart[index].quantity < 1) cart[index].quantity = 1;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        function updateQuantity(index, newQty) {
+            const qty = parseInt(newQty);
+            if (qty > 0) {
+                cart[index].quantity = qty;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCart();
+            }
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        function updateSummary() {
+            const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+            const deliveryFee = document.querySelector('input[name="delivery"]:checked').value === 'delivery' ? 20.00 : 0.00;
+            const total = subtotal + deliveryFee;
+
+            subtotalEl.textContent = `P${subtotal.toFixed(2)}`;
+            deliveryFeeEl.textContent = `P${deliveryFee.toFixed(2)}`;
+            totalEl.textContent = `P${total.toFixed(2)}`;
+        }
+
+        // Handle delivery option change
+        deliveryRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'collection') {
+                    deliveryFeeRow.style.display = 'none';
+                } else {
+                    deliveryFeeRow.style.display = 'flex';
+                }
+                updateSummary();
+            });
+        });
+
+        // Initialize
+        displayCart();
+    </script>
+</body>
+</html>

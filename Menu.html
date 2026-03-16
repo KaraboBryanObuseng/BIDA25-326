@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Menu Design</title>
+    <link rel="stylesheet" href="Menu.css">
+</head>
+<body>
+
+    <a href="index.html" class="back-home">
+    <img src="Back Arrow.png" alt="Back">
+</a>
+
+    <div class="cart-icon" onclick="window.location.href='Order.html'">
+        🛒 <span id="cart-count">0</span>
+    </div>
+
+    <main class="menu-container">
+        <!-- Hot Drinks Section -->
+        <section class="menu-section hot-drinks">
+            <h2 class="section-title">Hot Coffee</h2>
+            <div class="menu-grid">
+                <!-- Item 1: Espresso -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="Espresso-Cup.png" alt="Espresso">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Espresso <span class="item-price">/ P20.00</span></h3>
+                        <p class="item-description">Intense bold coffee shot extracted</p>
+                        <button class="add-to-cart" data-name="Espresso" data-price="20.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Item 2: Double Espresso -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="DoubleEspresso-Cup.png" alt="Espresso">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Double Espresso <span class="item-price">/ P25.00</span></h3>
+                        <p class="item-description">Double shot intense coffee power</p>
+                        <button class="add-to-cart" data-name="Double Espresso" data-price="25.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Item 3: Americano -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="Americano-Cup.png" alt="Espresso">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Americano <span class="item-price">/ P30.00</span></h3>
+                        <p class="item-description">Espresso diluted with hot water</p>
+                        <button class="add-to-cart" data-name="Americano" data-price="30.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Item 4: Flat White -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="FlatWhite-Cup.png" alt="Espresso">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Flat White <span class="item-price">/ P35.00</span></h3>
+                        <p class="item-description">Velvety microfoam over double espresso</p>
+                        <button class="add-to-cart" data-name="Flat White" data-price="35.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Item 5: Cafe Latte -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="CafeLatte-Cup.png" alt="Espresso">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Cafe Latte <span class="item-price">/ P40.00</span></h3>
+                        <p class="item-description">Smooth steamed milk espresso blend</p>
+                        <button class="add-to-cart" data-name="Cafe Latte" data-price="40.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Item 6: Macchiato -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="Macchiato-Cup.png" alt="Espresso">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Macchiato <span class="item-price">/ P30.00</span></h3>
+                        <p class="item-description">Espresso marked with milk foam</p>
+                        <button class="add-to-cart" data-name="Macchiato" data-price="30.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Item 7: Cappuccino -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="Cappuccino-Cup.png" alt="Espresso">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Cappuccino <span class="item-price">/ P30.00</span></h3>
+                        <p class="item-description">Equal parts espresso, steamed milk, and milk foam</p>
+                        <button class="add-to-cart" data-name="Cappuccino" data-price="30.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Item 8: Frappuccino -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="Frappuccino-Cup.png" alt="Espresso">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Frappuccino <span class="item-price">/ P45.00</span></h3>
+                        <p class="item-description">Blended coffee drink with ice and milk</p>
+                        <button class="add-to-cart" data-name="Frappuccino" data-price="45.00">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cold Drinks Section -->
+        <section class="menu-section cold-drinks">
+            <h2 class="section-title">Cold Coffee</h2>
+            <div class="menu-grid">
+                <!-- Item 1: Affogato -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="ColdAffogato-Cup.png" alt="Affogato">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Affogato <span class="item-price">/ P60.00</span></h3>
+                        <p class="item-description">Ice cream topped with hot espresso</p>
+                        <button class="add-to-cart" data-name="Affogato" data-price="60.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Item 2: Macchiato (Cold) -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="ColdMacchiato-Cup.png" alt="Macchiato">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Macchiato <span class="item-price">/ P45.00</span></h3>
+                        <p class="item-description">Cold espresso marked with milk foam</p>
+                        <button class="add-to-cart" data-name="Cold Macchiato" data-price="45.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Item 3: Cappuccino (Cold) -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="ColdCappuccino-Cup.png" alt="Cappuccino">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Cappuccino <span class="item-price">/ P50.00</span></h3>
+                        <p class="item-description">Cold equal parts espresso, steamed milk, and milk foam</p>
+                        <button class="add-to-cart" data-name="Cold Cappuccino" data-price="50.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Item 4: Frappuccino (Cold) -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="ColdFrappuccino-Cup.png" alt="Frappuccino">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">Frappuccino <span class="item-price">/ P55.00</span></h3>
+                        <p class="item-description">Cold blended coffee drink with ice and milk</p>
+                        <button class="add-to-cart" data-name="Cold Frappuccino" data-price="55.00">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Food and Dessert Sections (Side-by-Side) -->
+        <section class="food-dessert-layout">
+            <!-- Food Section -->
+            <section class="menu-section food-items">
+                <h2 class="section-title">Food</h2>
+                <div class="list-layout">
+                    <!-- Item 1: Chicken-->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Sandwich</h3>
+                            <p class="item-description">Chicken, Tomato, Lettuce, Onion, Wheat Bread, Cheese, With special secret sauce.</p>
+                            <button class="add-to-cart" data-name="Sandwich" data-price="80.00">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P80.00</span>
+                        </div>
+                    </div>
+                    <!-- Item 2: Special Burger -->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Special Burger</h3>
+                            <p class="item-description">Beef, Tomato, Lettuce, Onion, Wheat Bread, Cheese, With special secret sauce.</p>
+                            <button class="add-to-cart" data-name="Special Burger" data-price="140.50">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P140.50</span>
+                        </div>
+                    </div>
+                    <!-- Item 3: Beef Burger -->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Beef Burger</h3>
+                            <p class="item-description">Beef, Tomato, Lettuce, Onion, Wheat Bread, Cheese.</p>
+                            <button class="add-to-cart" data-name="Beef Burger" data-price="100.50">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P100.50</span>
+                        </div>
+                    </div>
+                    <!-- Item 4: Beef Sandwich -->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Beef Sandwich</h3>
+                            <p class="item-description">Beef, Tomato, Lettuce, Onion, Wheat Bread.</p>
+                            <button class="add-to-cart" data-name="Beef Sandwich" data-price="80.50">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P80.50</span>
+                        </div>
+                    </div>
+                    <!-- Item 5: Chicken Sandwich-->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Chicken Sandwich</h3>
+                            <p class="item-description">Chicken, Tomato, Lettuce, Onion, Wheat Bread.</p>
+                            <button class="add-to-cart" data-name="Chicken Sandwich" data-price="60.50">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P60.50</span>
+                        </div>
+                    </div>
+                    <!-- Item 6: Tuna Sandwich -->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Tuna Sandwich</h3>
+                            <p class="item-description">Tuna, Tomato, Lettuce, Onion, Wheat Bread.</p>
+                            <button class="add-to-cart" data-name="Tuna Sandwich" data-price="70.00">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P70.00</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dessert Section -->
+            <section class="menu-section dessert-items">
+                <h2 class="section-title">Dessert</h2>
+                <div class="list-layout">
+                    <!-- Item 1: Chocolate Waffle -->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Chocolate Waffle <span class="item-price">P40.50</span></h3>
+                            <p class="item-description">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            <button class="add-to-cart" data-name="Chocolate Waffle" data-price="40.50">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P40.50</span>
+                        </div>
+                    </div>
+                    <!-- Item 2: Strawberry Waffle -->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Strawberry Waffle <span class="item-price">P30.50</span></h3>
+                            <p class="item-description">Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                            <button class="add-to-cart" data-name="Strawberry Waffle" data-price="30.50">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P30.50</span>
+                        </div>
+                    </div>
+                    <!-- Item 3: Chocolate Cake -->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Chocolate Cake <span class="item-price">P30.00</span></h3>
+                            <p class="item-description">Laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <button class="add-to-cart" data-name="Chocolate Cake" data-price="30.00">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P30.00</span>
+                        </div>
+                    </div>
+                    <!-- Item 4: Ice Cream -->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Ice Cream <span class="item-price">P20.00</span></h3>
+                            <p class="item-description">Vanilla / Chocolate / Strawberry / Green Tea / Coffee</p>
+                            <button class="add-to-cart" data-name="Ice Cream" data-price="40.00">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P40.00</span>
+                        </div>
+                    </div>
+                    <!-- Item 5: Chocolate Pudding -->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Chocolate Pudding <span class="item-price">P30.50</span></h3>
+                            <p class="item-description">Laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <button class="add-to-cart" data-name="Chocolate Pudding" data-price="30.50">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P30.50</span>
+                        </div>
+                    </div>
+                    <!-- Item 6: Strawberry Pudding -->
+                    <div class="list-item">
+                        <div class="list-item-main">
+                            <h3 class="item-name">Strawberry Pudding <span class="item-price">P20.50</span></h3>
+                            <p class="item-description">Laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <button class="add-to-cart" data-name="Strawberry Pudding" data-price="20.50">Add to Cart</button>
+                        </div>
+                        <div class="item-price-col">
+                            <span class="item-price">P20.50</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script>
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartCount = document.getElementById('cart-count');
+
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+        }
+
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+        }
+
+        // Initialize cart count on page load
+        updateCartCount();
+
+        // Add event listeners to all add-to-cart buttons
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemName = this.getAttribute('data-name');
+                const itemPrice = this.getAttribute('data-price');
+                addToCart(itemName, itemPrice);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,412 @@
+/* --- 1. GLOBAL & RESET --- */
+:root {
+    --color-background: #0a0a0a; /* Very dark background */
+    --color-surface: #1a1a1a;    /* Slightly lighter for cards/sections */
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #cccccc;
+    --color-accent: #C67A3C;     /* Yellow/Gold accent color */
+    --color-button-bg: #C67A3C;  /* Updated brand button color */
+    --color-button-text: #ffffff;
+    --color-border: #000000;
+    --font-family: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+/* --- 2. BUTTONS --- */
+.back-home{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 40px;
+    text-decoration: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+
+    background: transparent;
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+
+.back-home img {
+    filter: invert(1);
+}
+
+.back-home:hover{
+    background: rgb(243, 239, 239);
+    color: white;
+}
+
+.back-home:hover img {
+    filter: sepia(1) hue-rotate(30deg) saturate(2) brightness(0.8);
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 25px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--color-button-bg);
+    color: var(--color-button-text);
+}
+
+.btn-primary:hover {
+    background-color: #a15a2f; /* Slightly darker on hover */
+}
+
+.btn-outline {
+    border: 2px solid var(--color-text-secondary);
+    color: var(--color-text-primary);
+    padding: 8px 20px;
+    border-radius: 25px; /* Pill shape for contact button in header */
+}
+
+.btn-outline:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+/* --- 4. HERO / ABOUT US SECTION --- */
+.hero-section {
+    padding: 80px 0 100px 0;
+    text-align: left;
+    position: relative;
+    color: #ffffff;
+    background: url('About-Us-Landscape.jpg') center/cover no-repeat;
+}
+
+.hero-section h2,
+.hero-section .section-subtitle,
+.hero-section .main-text {
+    color: #ffffff; /* Ensure text is black for readability on the light background */
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    z-index: 0;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+.breadcrumb {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.page-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+.about-main-content {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+.about-image-container {
+    flex: 1;
+    min-width: 40%;
+}
+
+.editor-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    /* The background image in the original design is dark/subtle, 
+       so we rely on the image itself to provide the visual context. */
+}
+
+.about-text-container {
+    flex: 1;
+}
+
+.section-subtitle {
+    color: var(--color-accent);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.about-text-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.main-text {
+    color: var(--color-text-secondary);
+    margin-bottom: 30px;
+}
+
+/* --- 5. OUR SKILLS SECTION --- */
+.skills-section {
+    padding: 80px 0;
+    background-color: #181717;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Skills list wider than stats */
+    gap: 60px;
+}
+
+.skills-list-container h3 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.section-text {
+    color: var(--color-text-secondary);
+    margin-bottom: 30px;
+}
+
+/* Skill Bars */
+.skill-bar {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.skill-name, .skill-percent {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.bar-container {
+    height: 8px;
+    background-color: var(--color-border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    background-color: var(--color-accent);
+    transition: width 1s ease-out;
+}
+
+/* Stats Counter */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.stat-item {
+    padding: 20px;
+    border-left: 3px solid var(--color-accent);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.stat-label {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+/* --- 6. CTA BANNER --- */
+.cta-banner {
+    padding: 100px 0;
+    text-align: center;
+    /* Background image placeholder - in a real scenario, this would be a dark, subtle background image */
+    background-color: #111111; 
+}
+
+.cta-content h2 {
+    font-size: 2.8rem;
+    margin: 10px 0 30px 0;
+    font-weight: 700;
+}
+
+.cta-pre-title {
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+/* --- 7. FOOTER --- */
+.footer {
+    padding: 60px 0 20px 0;
+    background-color: #000000; /* Pure black for the footer base */
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.footer-col h4 {
+    color: var(--color-text-primary);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col li {
+    margin-bottom: 10px;
+}
+
+.footer-col a {
+    color: var(--color-text-secondary);
+    transition: color 0.2s;
+}
+
+.footer-col a:hover {
+    color: var(--color-accent);
+}
+
+.footer-about .logo {
+    margin-bottom: 15px;
+}
+
+.footer-about p {
+    color: var(--color-text-secondary);
+    margin-bottom: 20px;
+}
+
+.social-links {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    font-size: 1.1rem;
+    border: 1px solid var(--color-border);
+    transition: background-color 0.2s;
+}
+
+.social-icon:hover {
+    background-color: var(--color-accent);
+    color: var(--color-button-text);
+}
+
+.contact-info li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-info .icon {
+    color: var(--color-accent);
+    font-size: 1.1rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
+/* --- 8. RESPONSIVENESS (Basic Mobile Adjustments) --- */
+@media (max-width: 992px) {
+    .skills-grid {
+        grid-template-columns: 1fr; /* Stack skills and stats vertically */
+    }
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 2.5rem;
+    }
+    .about-main-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    .about-image-container {
+        order: -1; /* Image comes first on mobile */
+        margin-bottom: 30px;
+    }
+    .about-text-container h2 {
+        font-size: 2rem;
+    }
+    .stats-container {
+        grid-template-columns: 1fr; /* Stack stats vertically */
+    }
+    .footer-grid {
+        grid-template-columns: 1fr; /* Stack footer columns */
+        text-align: center;
+    }
+    .footer-about .social-links {
+        justify-content: center;
+    }
+    .footer-col ul {
+        padding-left: 0;
+    }
+    .footer-col ul, .contact-info {
+        text-align: center;
+    }
+}
