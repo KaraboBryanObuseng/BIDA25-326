@@ -117,7 +117,7 @@ body {
     height: 120px;
     background-color: #f0f0f0; /* Placeholder color */
     border-radius: 50%; /* To mimic the circular cup presentation */
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     /* In a real implementation, you would use background-image or an <img> tag here */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
@@ -247,17 +247,6 @@ body {
     display: none;
 }
 
-
-/* --- Footer --- */
-.footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 12px;
-    color: #888;
-    border-top: 1px solid #eee;
-    margin-top: 20px;
-}
-
 /* --- Responsive Adjustments (Optional but recommended) --- */
 @media (max-width: 1100px) {
     .menu-grid {
@@ -295,3 +284,6 @@ body {
         font-size: 20px;
     }
 }
+
+/* Footer */
+.footer-custom { background: #EDC089 !important; color: black; text-align:center; padding:1rem 0; }
