@@ -3,106 +3,1488 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment Successful</title>
-
+<title>Checkout · Brews</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-body {
-    margin: 0;
-    height: 100vh;
+  :root {
+    --cream: #f4ede0;
+    --cream-dark: #ebe1cf;
+    --paper: #faf6ee;
+    --espresso: #2b1d11;
+    --espresso-soft: #4a3422;
+    --espresso-mute: #6b5640;
+    --crema: #c87f3f;
+    --crema-deep: #a05a25;
+    --milk: #fffaf0;
+    --gold: #c9a14a;
+    --green: #6b8a4a;
+    --red: #b54a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--espresso);
+    font-family: 'Inter Tight', sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 25% 35%, rgba(43,29,17,0.025) 1px, transparent 1px),
+      radial-gradient(circle at 75% 65%, rgba(43,29,17,0.02) 1px, transparent 1px);
+    background-size: 4px 4px, 6px 6px;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .serif { font-family: 'Fraunces', serif; }
+
+  /* ===== TOP BAR ===== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(244,237,224,0.95);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--espresso);
+    padding: 18px 40px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #4CAF50, #2E7D32);
-    color: white;
-}
+  }
 
-.container {
-    text-align: center;
-}
-
-/* Circle */
-.circle {
-    width: 120px;
-    height: 120px;
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--espresso);
+    text-decoration: none;
+  }
+  .logo-mark {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    border: 5px solid white;
+    background: var(--espresso);
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+  .logo-mark::before {
+    content: '';
+    width: 60%;
+    height: 1.5px;
+    background: var(--cream);
+    border-radius: 2px;
+  }
+  .logo-mark::after {
+    content: '';
+    position: absolute;
+    width: 18%;
+    height: 50%;
+    background: var(--cream);
+    border-radius: 0 0 4px 4px;
+    top: 25%;
+  }
+
+  .back-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--espresso);
+    text-decoration: none;
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin: 0 auto 20px;
-    animation: pop 0.5s ease;
-}
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--espresso);
+    border-radius: 100px;
+    transition: all 0.2s;
+  }
+  .back-link:hover {
+    background: var(--espresso);
+    color: var(--cream);
+  }
 
-/* SVG Tick */
-.checkmark {
-    width: 60px;
-    height: 60px;
-}
+  .secure-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--espresso-soft);
+  }
+  .secure-badge svg { color: var(--green); }
 
-.checkmark path {
-    stroke: white;
-    stroke-width: 5;
-    fill: none;
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
-    animation: draw 0.6s ease forwards;
-}
+  /* ===== STEPPER ===== */
+  .stepper {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 2;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--espresso-mute);
+  }
+  .step.done { color: var(--espresso-soft); }
+  .step.active { color: var(--crema-deep); }
 
-/* Text */
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
+  .step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .step.done .step-num {
+    background: var(--espresso-soft);
+    color: var(--cream);
+    border-color: var(--espresso-soft);
+  }
+  .step.active .step-num {
+    background: var(--crema-deep);
+    color: var(--cream);
+    border-color: var(--crema-deep);
+  }
+  .step-line {
+    flex: 1;
+    height: 1px;
+    background: var(--espresso-mute);
+    opacity: 0.3;
+  }
+  .step-line.done { background: var(--espresso-soft); opacity: 1; }
 
-p {
-    opacity: 0.9;
-}
+  /* ===== LAYOUT ===== */
+  .checkout-container {
+    max-width: 1200px;
+    margin: 32px auto 0;
+    padding: 0 40px 80px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+    position: relative;
+    z-index: 2;
+    align-items: start;
+  }
 
-/* Button */
-.btn {
-    margin-top: 20px;
-    padding: 12px 25px;
-    border: none;
-    background: white;
-    color: #2E7D32;
-    border-radius: 30px;
+  /* ===== FORM SIDE ===== */
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .page-title {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 4px;
+  }
+  .page-title em { font-style: italic; color: var(--crema-deep); font-weight: 300; }
+
+  .page-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--espresso-soft);
+    margin-bottom: 20px;
+  }
+
+  .form-card {
+    background: var(--paper);
+    border: 1px solid var(--espresso);
+    padding: 32px;
+  }
+
+  .form-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--espresso);
+  }
+
+  .form-card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .form-card-title em { font-style: italic; color: var(--crema-deep); font-weight: 400; }
+
+  .form-card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--espresso-mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .form-grid {
+    display: grid;
+    gap: 18px;
+  }
+  .form-grid.two-col { grid-template-columns: 1fr 1fr; }
+  .form-grid.three-col { grid-template-columns: 2fr 1fr 1fr; }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--espresso-soft);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .form-label .req { color: var(--crema-deep); }
+
+  .form-input {
+    background: var(--cream);
+    border: 1px solid var(--espresso);
+    color: var(--espresso);
+    padding: 14px 16px;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 15px;
+    border-radius: 0;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .form-input::placeholder {
+    color: var(--espresso-mute);
+    opacity: 0.6;
+  }
+  .form-input:focus {
+    outline: none;
+    background: var(--milk);
+    box-shadow: 4px 4px 0 var(--crema-deep);
+    transform: translate(-2px, -2px);
+  }
+
+  .card-input-wrap { position: relative; }
+  .card-input-wrap .form-input {
+    padding-right: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+  }
+  .card-icons {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 6px;
+    pointer-events: none;
+  }
+  .card-icon {
+    width: 32px;
+    height: 22px;
+    border: 1px solid var(--espresso);
+    border-radius: 3px;
+    display: grid;
+    place-items: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 10px;
+    background: var(--cream);
+  }
+  .card-icon.visa { background: #1a1f71; color: #f7b600; font-style: italic; }
+  .card-icon.mc { background: var(--cream); position: relative; }
+  .card-icon.mc::before, .card-icon.mc::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .card-icon.mc::before { background: #eb001b; left: 4px; }
+  .card-icon.mc::after { background: #f79e1b; right: 4px; mix-blend-mode: multiply; }
+
+  .mono-input {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 15px !important;
+    letter-spacing: 0.05em;
+  }
+
+  /* Pay methods */
+  .pay-methods {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .pay-method {
+    background: var(--cream);
+    border: 1px solid var(--espresso);
+    padding: 14px 12px;
+    text-align: center;
     cursor: pointer;
-    font-weight: bold;
-}
+    transition: all 0.25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+  }
+  .pay-method:hover { background: var(--milk); }
+  .pay-method.active {
+    background: var(--espresso);
+    color: var(--cream);
+    box-shadow: 4px 4px 0 var(--crema-deep);
+    transform: translate(-2px, -2px);
+  }
+  .pay-method-icon {
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid currentColor;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+  }
+  .pay-method-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .pay-method.active::after {
+    content: '✓';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 11px;
+    color: var(--crema);
+  }
 
-/* Animations */
-@keyframes pop {
-    from { transform: scale(0); }
-    to { transform: scale(1); }
-}
+  /* Delivery type display (read from order page choice) */
+  .delivery-display {
+    background: var(--cream);
+    border: 1px solid var(--espresso);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .delivery-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--espresso);
+    color: var(--cream);
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .delivery-info { flex: 1; }
+  .delivery-type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--espresso-soft);
+    margin-bottom: 2px;
+  }
+  .delivery-type-name {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .delivery-change {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--crema-deep);
+    text-decoration: none;
+    border-bottom: 1px solid var(--crema-deep);
+    padding-bottom: 1px;
+  }
+  .delivery-change:hover { color: var(--espresso); border-color: var(--espresso); }
 
-@keyframes draw {
-    to { stroke-dashoffset: 0; }
-}
+  /* Address (only when delivery) */
+  .address-section { display: none; }
+  .address-section.show { display: block; }
+
+  /* Checkbox */
+  .check-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: var(--cream);
+    border: 1px solid var(--espresso);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .check-row:hover { background: var(--milk); }
+  .check-box {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--espresso);
+    border-radius: 4px;
+    background: var(--paper);
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    margin-top: 1px;
+    transition: all 0.2s;
+  }
+  .check-row.checked .check-box {
+    background: var(--espresso);
+    border-color: var(--espresso);
+    color: var(--cream);
+  }
+  .check-box svg { opacity: 0; transition: opacity 0.2s; }
+  .check-row.checked .check-box svg { opacity: 1; }
+  .check-content { flex: 1; }
+  .check-title { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+  .check-desc { font-size: 12px; color: var(--espresso-soft); line-height: 1.5; }
+
+  /* ===== ORDER SUMMARY ===== */
+  .summary {
+    position: sticky;
+    top: 100px;
+    background: var(--espresso);
+    color: var(--cream);
+    border: 1px solid var(--espresso);
+    overflow: hidden;
+  }
+
+  .summary-header {
+    padding: 24px 28px;
+    border-bottom: 1px solid rgba(244,237,224,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .summary-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .summary-title em { font-style: italic; color: var(--crema); font-weight: 400; }
+
+  .summary-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(244,237,224,0.6);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .order-items {
+    padding: 8px 28px;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+  /* Custom scrollbar */
+  .order-items::-webkit-scrollbar { width: 6px; }
+  .order-items::-webkit-scrollbar-track { background: rgba(244,237,224,0.05); }
+  .order-items::-webkit-scrollbar-thumb { background: rgba(244,237,224,0.2); border-radius: 3px; }
+
+  .order-item {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(244,237,224,0.1);
+    align-items: center;
+  }
+  .order-item:last-child { border-bottom: none; }
+
+  .item-thumb {
+    width: 56px;
+    height: 56px;
+    border: 1px solid rgba(244,237,224,0.2);
+    background: var(--paper);
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .item-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 7px;
+  }
+  /* Fallback cup if image fails */
+  .item-thumb.no-img::before {
+    content: '';
+    width: 26px;
+    height: 22px;
+    border: 1.5px solid var(--cream);
+    border-top: none;
+    border-radius: 0 0 13px 13px;
+    background: var(--crema-deep);
+  }
+  .item-thumb.no-img::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 22px;
+    width: 7px;
+    height: 12px;
+    border: 1.5px solid var(--cream);
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+  }
+  .item-qty {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--crema);
+    color: var(--espresso);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1.5px solid var(--espresso);
+    z-index: 2;
+  }
+
+  .item-info { min-width: 0; }
+  .item-name {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+  .item-name em { font-style: italic; color: var(--crema); font-weight: 400; }
+  .item-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(244,237,224,0.6);
+  }
+
+  .item-price {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .item-price em { font-style: italic; }
+
+  /* Empty cart state */
+  .empty-cart {
+    padding: 48px 28px;
+    text-align: center;
+    color: rgba(244,237,224,0.6);
+  }
+  .empty-cart-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .empty-cart-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+  }
+  .empty-cart-btn {
+    background: var(--crema);
+    color: var(--espresso);
+    padding: 12px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border-radius: 100px;
+    display: inline-block;
+  }
+
+  /* Promo */
+  .promo-row {
+    padding: 20px 28px;
+    border-top: 1px solid rgba(244,237,224,0.15);
+    border-bottom: 1px solid rgba(244,237,224,0.15);
+    display: flex;
+    gap: 8px;
+  }
+  .promo-input {
+    flex: 1;
+    background: rgba(244,237,224,0.05);
+    border: 1px solid rgba(244,237,224,0.25);
+    color: var(--cream);
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .promo-input::placeholder { color: rgba(244,237,224,0.4); }
+  .promo-input:focus { outline: none; border-color: var(--crema); }
+
+  .promo-btn {
+    background: rgba(244,237,224,0.1);
+    border: 1px solid rgba(244,237,224,0.25);
+    color: var(--cream);
+    padding: 10px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .promo-btn:hover {
+    background: var(--crema);
+    border-color: var(--crema);
+    color: var(--espresso);
+  }
+
+  /* Totals */
+  .totals { padding: 20px 28px; }
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: rgba(244,237,224,0.75);
+  }
+
+  .grand-total {
+    margin-top: 14px;
+    padding-top: 18px;
+    border-top: 1px dashed rgba(244,237,224,0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .grand-total-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(244,237,224,0.7);
+  }
+  .grand-total-value {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+  }
+  .grand-total-value em { font-style: italic; color: var(--crema); }
+
+  .pay-action { padding: 0 28px 28px; }
+  .pay-btn {
+    width: 100%;
+    background: var(--crema);
+    color: var(--espresso);
+    border: 1px solid var(--crema);
+    padding: 18px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .pay-btn:hover { background: var(--cream); border-color: var(--cream); }
+  .pay-btn:active { transform: scale(0.98); }
+  .pay-btn:disabled,
+  .pay-btn.loading {
+    background: var(--espresso-soft);
+    color: rgba(244,237,224,0.6);
+    cursor: wait;
+    border-color: var(--espresso-soft);
+  }
+  .pay-btn .lock-icon { font-size: 14px; }
+
+  .pay-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(244,237,224,0.5);
+    text-align: center;
+    margin-top: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.6;
+  }
+
+  /* Spinner */
+  .spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(244,237,224,0.3);
+    border-top-color: var(--crema);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* SUCCESS OVERLAY */
+  .success-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  .success-overlay.show {
+    display: flex;
+    animation: fadeIn 0.5s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .success-card {
+    max-width: 520px;
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--espresso);
+    padding: 56px 48px;
+    text-align: center;
+    box-shadow: 12px 12px 0 var(--espresso);
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .success-checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--green);
+    border: 2px solid var(--espresso);
+    margin: 0 auto 28px;
+    display: grid;
+    place-items: center;
+    color: var(--cream);
+    animation: pop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+
+  .success-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--crema-deep);
+    margin-bottom: 12px;
+  }
+  .success-title {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+  }
+  .success-title em { font-style: italic; color: var(--crema-deep); font-weight: 300; }
+  .success-text {
+    font-size: 15px;
+    color: var(--espresso-soft);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .success-text strong { color: var(--espresso); }
+  .success-receipt {
+    background: var(--cream);
+    border: 1px dashed var(--espresso);
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--espresso-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .success-receipt-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+  }
+  .success-receipt-row strong { color: var(--espresso); }
+  .success-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  .btn-primary {
+    background: var(--espresso);
+    color: var(--cream);
+    padding: 14px 24px;
+    border: 1px solid var(--espresso);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 100px;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--crema-deep); border-color: var(--crema-deep); }
+  .btn-ghost {
+    color: var(--espresso);
+    padding: 14px 24px;
+    border: 1px solid var(--espresso);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 100px;
+    background: transparent;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { background: var(--espresso); color: var(--cream); }
+
+  .confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    border-radius: 2px;
+  }
+
+  /* Field error state */
+  .form-input.error {
+    border-color: var(--red);
+    background: rgba(181,74,58,0.05);
+  }
+  .field-error {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin-top: 4px;
+    display: none;
+  }
+  .field-error.show { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .topbar { padding: 14px 20px; flex-wrap: wrap; gap: 8px; }
+    .secure-badge { order: 3; width: 100%; justify-content: center; }
+    .stepper { padding: 0 20px; flex-wrap: wrap; gap: 8px; }
+    .step-line { min-width: 20px; }
+    .checkout-container {
+      grid-template-columns: 1fr;
+      padding: 0 20px 60px;
+      gap: 24px;
+    }
+    .summary { position: static; order: -1; }
+    .page-title { font-size: 40px; }
+    .form-card { padding: 24px 20px; }
+    .form-grid.three-col { grid-template-columns: 1fr 1fr; }
+    .form-grid.three-col .form-field:first-child { grid-column: 1 / -1; }
+    .pay-methods { grid-template-columns: 1fr; }
+    .success-card { padding: 40px 28px; }
+    .success-title { font-size: 36px; }
+    .success-actions { flex-direction: column; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .reveal.d1 { animation-delay: 0.08s; }
+  .reveal.d2 { animation-delay: 0.16s; }
+  .reveal.d3 { animation-delay: 0.24s; }
+  @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
-
 <body>
 
-<div class="container">
-    
-    <div class="circle">
-        <svg class="checkmark" viewBox="0 0 52 52">
-            <path d="M14 27 L22 35 L38 18"></path>
-        </svg>
+<!-- TOP BAR -->
+<a href="index.html" class="logo">
+    <img src="coffee-cup.png" alt="Brews" class="logo-mark">
+    <span>Brews</span>
+</a>
+  <div class="secure-badge">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <span>Secure Checkout</span>
+  </div>
+  <a href="Order.html" class="back-link">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <span>Back to Cart</span>
+  </a>
+</div>
+
+<!-- STEPPER -->
+<div class="stepper">
+  <div class="step done">
+    <div class="step-num">✓</div>
+    <span>Cart</span>
+  </div>
+  <div class="step-line done"></div>
+  <div class="step active">
+    <div class="step-num">2</div>
+    <span>Checkout</span>
+  </div>
+  <div class="step-line"></div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <span>Confirmation</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="checkout-container">
+
+  <!-- FORM SIDE -->
+  <div class="form-section">
+
+    <div class="reveal">
+      <div class="page-sub" id="orderNumber">§ Order №034</div>
+      <h1 class="page-title">Almost <em>brewed.</em></h1>
     </div>
 
-    <h1>Payment Successful!</h1>
-    <p>Your order has been placed successfully.</p>
+    <!-- CONTACT -->
+    <div class="form-card reveal d1">
+      <div class="form-card-header">
+        <h2 class="form-card-title"><em>01</em> · Your details</h2>
+        <span class="form-card-num">REQUIRED</span>
+      </div>
 
-    <button class="btn" onclick="goOrder()">Go Back</button>
+      <div class="form-grid">
+        <div class="form-grid two-col">
+          <div class="form-field">
+            <label class="form-label">First Name <span class="req">*</span></label>
+            <input type="text" class="form-input" id="firstName" placeholder="Karabo">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Last Name <span class="req">*</span></label>
+            <input type="text" class="form-input" id="lastName" placeholder="Obuseng">
+          </div>
+        </div>
+        <div class="form-grid two-col">
+          <div class="form-field">
+            <label class="form-label">Email <span class="req">*</span></label>
+            <input type="email" class="form-input" id="email" placeholder="you@example.com">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Phone <span class="req">*</span></label>
+            <input type="tel" class="form-input mono-input" id="phone" placeholder="+267 76 000 000">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELIVERY / COLLECTION -->
+    <div class="form-card reveal d2">
+      <div class="form-card-header">
+        <h2 class="form-card-title"><em>02</em> · <span id="deliveryHeading">Delivery details</span></h2>
+        <span class="form-card-num" id="deliveryStatusLabel">FROM CART</span>
+      </div>
+
+      <div class="delivery-display" style="margin-bottom: 18px;">
+        <div class="delivery-icon" id="deliveryIcon">🚚</div>
+        <div class="delivery-info">
+          <div class="delivery-type-label">Selected option</div>
+          <div class="delivery-type-name" id="deliveryTypeName">Delivery</div>
+        </div>
+        <a href="Order.html" class="delivery-change">Change</a>
+      </div>
+
+      <!-- Delivery address (shown when delivery selected) -->
+      <div class="address-section" id="addressSection">
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">Street Address <span class="req">*</span></label>
+            <input type="text" class="form-input" id="address" placeholder="Plot 1234, Main Mall">
+          </div>
+          <div class="form-grid two-col">
+            <div class="form-field">
+              <label class="form-label">City <span class="req">*</span></label>
+              <input type="text" class="form-input" id="city" placeholder="Gaborone" value="Gaborone">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Delivery Notes</label>
+              <input type="text" class="form-input" id="notes" placeholder="Gate code, landmarks…">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pickup info (shown when collection selected) -->
+      <div id="pickupSection" style="display:none;">
+        <div style="padding: 16px 20px; background: var(--cream); border: 1px solid var(--espresso); font-size: 14px; line-height: 1.6;">
+          <strong>Pickup at Brews · Gaborone Main Mall</strong><br>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--espresso-soft);">Ready in approximately 10 minutes after payment</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="form-card reveal d3">
+      <div class="form-card-header">
+        <h2 class="form-card-title"><em>03</em> · Payment method</h2>
+        <span class="form-card-num">SECURED · 256-BIT</span>
+      </div>
+
+      <div class="pay-methods">
+        <div class="pay-method active" data-method="card" onclick="selectPay(this)">
+          <div class="pay-method-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <span class="pay-method-name">Card</span>
+        </div>
+        <div class="pay-method" data-method="cash" onclick="selectPay(this)">
+          <div class="pay-method-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3h20a3 3 0 0 0-3 3v5a3 3 0 0 0 3 3z"/><line x1="6" y1="12" x2="6.01" y2="12"/><line x1="18" y1="12" x2="18.01" y2="12"/></svg>
+          </div>
+          <span class="pay-method-name">Cash</span>
+        </div>
+        <div class="pay-method" data-method="mobile" onclick="selectPay(this)">
+          <div class="pay-method-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </div>
+          <span class="pay-method-name">Mobile Pay</span>
+        </div>
+      </div>
+
+      <div id="cardFields" class="form-grid">
+        <div class="form-field">
+          <label class="form-label">Card Number <span class="req">*</span></label>
+          <div class="card-input-wrap">
+            <input type="text" class="form-input mono-input" id="cardNum" placeholder="•••• •••• •••• ••••" maxlength="19" oninput="formatCard(this)">
+            <div class="card-icons">
+              <div class="card-icon visa">VISA</div>
+              <div class="card-icon mc"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid three-col">
+          <div class="form-field">
+            <label class="form-label">Cardholder Name <span class="req">*</span></label>
+            <input type="text" class="form-input" id="cardName" placeholder="As shown on card">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Expiry <span class="req">*</span></label>
+            <input type="text" class="form-input mono-input" id="expiry" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)">
+          </div>
+          <div class="form-field">
+            <label class="form-label">CVC <span class="req">*</span></label>
+            <input type="text" class="form-input mono-input" id="cvc" placeholder="•••" maxlength="4">
+          </div>
+        </div>
+
+        <div class="check-row checked" onclick="toggleCheck(this)">
+          <div class="check-box">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="check-content">
+            <div class="check-title">Email me a receipt</div>
+            <div class="check-desc">Get a digital receipt sent to your inbox right after payment.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cash / mobile note (shown when those are selected) -->
+      <div id="otherPayNote" style="display:none; padding: 16px 20px; background: var(--cream); border: 1px solid var(--espresso); font-size: 14px; line-height: 1.6;">
+        <strong id="otherPayTitle">Pay on collection</strong><br>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--espresso-soft);" id="otherPayDesc">Have your payment ready when you arrive at the counter.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <aside class="summary reveal d1">
+    <div class="summary-header">
+      <h2 class="summary-title">Your <em>order</em></h2>
+      <span class="summary-num" id="summaryOrderNum">№034</span>
+    </div>
+
+    <div class="order-items" id="orderItemsList">
+      <!-- items injected by JS -->
+    </div>
+
+    <div class="promo-row">
+      <input type="text" class="promo-input" placeholder="Promo code">
+      <button class="promo-btn">Apply</button>
+    </div>
+
+    <div class="totals">
+      <div class="total-row">
+        <span>Subtotal</span>
+        <span id="summarySubtotal">P0.00</span>
+      </div>
+      <div class="total-row" id="deliveryFeeRow">
+        <span>Delivery fee</span>
+        <span id="summaryDeliveryFee">P20.00</span>
+      </div>
+
+      <div class="grand-total">
+        <span class="grand-total-label">Total</span>
+        <span class="grand-total-value" id="summaryTotal">P<em>0.00</em></span>
+      </div>
+    </div>
+
+    <div class="pay-action">
+      <button class="pay-btn" id="payBtn" onclick="processPayment()">
+        <span class="lock-icon">🔒</span>
+        <span id="payBtnText">Pay Now</span>
+      </button>
+      <div class="pay-note" id="payFooterNote">
+        By paying you agree to our terms.<br>
+        Pickup at Brews · Gaborone Main Mall
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="success-checkmark">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="success-num">§ Payment Confirmed</div>
+    <h2 class="success-title">Your coffee is<br><em>on the way.</em></h2>
+    <p class="success-text" id="successText">
+      Thanks! Your order is being prepared.
+    </p>
+
+    <div class="success-receipt">
+      <div class="success-receipt-row"><span>Order №</span><strong id="successOrderNum">034</strong></div>
+      <div class="success-receipt-row"><span>Items</span><strong id="successItemCount">3 items</strong></div>
+      <div class="success-receipt-row"><span>Amount</span><strong id="successAmount">P0.00</strong></div>
+      <div class="success-receipt-row"><span>Method</span><strong id="successMethod">Visa •••• 4242</strong></div>
+    </div>
+
+    <div class="success-actions">
+      <a href="index.html" class="btn-primary">Back to Home →</a>
+      <a href="Menu.html" class="btn-ghost">Order Again</a>
+    </div>
+  </div>
 </div>
 
 <script>
-function goOrder() {
-    window.location.href = "Order.html";
-}
+  // ================================================
+  // LOAD CART FROM LOCALSTORAGE (set by Order.html)
+  // ================================================
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const deliveryOption = localStorage.getItem('deliveryOption') || 'delivery';
+
+  // Same image map as Order.html so the thumbnails match
+  function getImageSrc(name) {
+    const imageMap = {
+      'Espresso': 'Espresso-Cup.png',
+      'Double Espresso': 'DoubleEspresso-Cup.png',
+      'Americano': 'Americano-Cup.png',
+      'Flat White': 'FlatWhite-Cup.png',
+      'Cafe Latte': 'CafeLatte-Cup.png',
+      'Macchiato': 'Macchiato-Cup.png',
+      'Cappuccino': 'Cappuccino-Cup.png',
+      'Frappuccino': 'Frappuccino-Cup.png',
+      'Affogato': 'ColdAffogato-Cup.png',
+      'Cold Macchiato': 'ColdMacchiato-Cup.png',
+      'Cold Cappuccino': 'ColdCappuccino-Cup.png',
+      'Cold Frappuccino': 'ColdFrappuccino-Cup.png',
+      'Sandwich': 'sandwich.jpeg',
+      'Special Burger': 'Special Burger.jpeg',
+      'Beef Burger': 'burger.jpeg',
+      'Beef Sandwich': 'Beef Sandwich.jpeg',
+      'Chicken Sandwich': 'Chicken Sandwich.jpeg',
+      'Tuna Sandwich': 'Tuna Sandwich.jpeg',
+      'Chocolate Waffle': 'Chocolate Waffle.jpeg',
+      'Strawberry Waffle': 'Straw Berry Waffle.jpeg',
+      'Chocolate Cake': 'cake.jpeg',
+      'Ice Cream': 'icecream.jpeg',
+      'Chocolate Pudding': 'Chocolate Pudding.jpeg',
+      'Strawberry Pudding': 'Strawberry Pudding.jpeg'
+    };
+    return imageMap[name] || null;
+  }
+
+  // Generate order number from time + random — feels more real than hardcoded
+  const orderNumber = String(Math.floor(Math.random() * 900) + 100);
+  document.getElementById('orderNumber').textContent = `§ Order №${orderNumber}`;
+  document.getElementById('summaryOrderNum').textContent = `№${orderNumber}`;
+  document.getElementById('successOrderNum').textContent = orderNumber;
+
+  // ================================================
+  // RENDER ITEMS
+  // ================================================
+  const itemsList = document.getElementById('orderItemsList');
+
+  if (cart.length === 0) {
+    itemsList.innerHTML = `
+      <div class="empty-cart">
+        <div class="empty-cart-title">No items in cart</div>
+        <div class="empty-cart-text">Add something from the menu to checkout</div>
+        <a href="Menu.html" class="empty-cart-btn">Browse Menu →</a>
+      </div>
+    `;
+    document.getElementById('payBtn').disabled = true;
+    document.getElementById('payBtnText').textContent = 'Cart is empty';
+  } else {
+    cart.forEach(item => {
+      const itemTotal = (parseFloat(item.price) * item.quantity).toFixed(2);
+      const imgSrc = getImageSrc(item.name);
+
+      const itemRow = document.createElement('div');
+      itemRow.className = 'order-item';
+      itemRow.innerHTML = `
+        <div class="item-thumb ${imgSrc ? '' : 'no-img'}">
+          ${imgSrc ? `<img src="${imgSrc}" alt="${item.name}" onerror="this.parentElement.classList.add('no-img'); this.remove();">` : ''}
+          <span class="item-qty">${item.quantity}</span>
+        </div>
+        <div class="item-info">
+          <div class="item-name">${item.name}</div>
+          <div class="item-meta">P${item.price} each</div>
+        </div>
+        <div class="item-price">P<em>${itemTotal}</em></div>
+      `;
+      itemsList.appendChild(itemRow);
+    });
+  }
+
+  // ================================================
+  // CALCULATE TOTALS (matches Order.html logic)
+  // ================================================
+  const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+  const deliveryFee = deliveryOption === 'delivery' ? 20.00 : 0.00;
+  const total = subtotal + deliveryFee;
+
+  document.getElementById('summarySubtotal').textContent = `P${subtotal.toFixed(2)}`;
+  document.getElementById('summaryDeliveryFee').textContent = `P${deliveryFee.toFixed(2)}`;
+  document.getElementById('summaryTotal').innerHTML = `P<em>${total.toFixed(2)}</em>`;
+
+  // Update pay button label with the actual total
+  if (cart.length > 0) {
+    document.getElementById('payBtnText').textContent = `Pay Now · P${total.toFixed(2)}`;
+  }
+
+  // ================================================
+  // DELIVERY / COLLECTION DISPLAY
+  // ================================================
+  const deliveryIcon = document.getElementById('deliveryIcon');
+  const deliveryTypeName = document.getElementById('deliveryTypeName');
+  const addressSection = document.getElementById('addressSection');
+  const pickupSection = document.getElementById('pickupSection');
+  const deliveryFeeRow = document.getElementById('deliveryFeeRow');
+  const deliveryHeading = document.getElementById('deliveryHeading');
+  const payFooterNote = document.getElementById('payFooterNote');
+
+  if (deliveryOption === 'collection') {
+    deliveryIcon.textContent = '🏪';
+    deliveryTypeName.textContent = 'Collection at Store';
+    deliveryHeading.textContent = 'Pickup details';
+    addressSection.classList.remove('show');
+    pickupSection.style.display = 'block';
+    deliveryFeeRow.style.display = 'none';
+    payFooterNote.innerHTML = 'By paying you agree to our terms.<br>Pickup at Brews · Gaborone Main Mall';
+  } else {
+    deliveryIcon.textContent = '🚚';
+    deliveryTypeName.textContent = 'Delivery to Address';
+    deliveryHeading.textContent = 'Delivery details';
+    addressSection.classList.add('show');
+    pickupSection.style.display = 'none';
+    deliveryFeeRow.style.display = 'flex';
+    payFooterNote.innerHTML = 'By paying you agree to our terms.<br>Standard delivery · Gaborone area';
+  }
+
+  // ================================================
+  // FORM HELPERS
+  // ================================================
+  function formatCard(input) {
+    let v = input.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+    let formatted = v.match(/.{1,4}/g)?.join(' ') || '';
+    input.value = formatted;
+  }
+
+  function formatExpiry(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (v.length >= 2) {
+      v = v.slice(0, 2) + (v.length > 2 ? ' / ' + v.slice(2, 4) : '');
+    }
+    input.value = v;
+  }
+
+  function selectPay(el) {
+    document.querySelectorAll('.pay-method').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+
+    const method = el.dataset.method;
+    const cardFields = document.getElementById('cardFields');
+    const otherPayNote = document.getElementById('otherPayNote');
+    const otherPayTitle = document.getElementById('otherPayTitle');
+    const otherPayDesc = document.getElementById('otherPayDesc');
+
+    if (method === 'card') {
+      cardFields.style.display = 'grid';
+      otherPayNote.style.display = 'none';
+    } else if (method === 'cash') {
+      cardFields.style.display = 'none';
+      otherPayNote.style.display = 'block';
+      otherPayTitle.textContent = deliveryOption === 'delivery' ? 'Pay on delivery' : 'Pay on collection';
+      otherPayDesc.textContent = 'Have your payment ready in cash when your order arrives.';
+    } else if (method === 'mobile') {
+      cardFields.style.display = 'none';
+      otherPayNote.style.display = 'block';
+      otherPayTitle.textContent = 'Mobile Money';
+      otherPayDesc.textContent = 'You\'ll receive a prompt on your phone to confirm payment.';
+    }
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+  }
+
+  // ================================================
+  // PAYMENT (DUMMY)
+  // ================================================
+  function processPayment() {
+    if (cart.length === 0) return;
+
+    const btn = document.getElementById('payBtn');
+    const txt = document.getElementById('payBtnText');
+
+    btn.classList.add('loading');
+    btn.disabled = true;
+    txt.innerHTML = '<span class="spinner"></span> Processing payment…';
+
+    setTimeout(() => {
+      // Get user details for personalized message
+      const firstName = document.getElementById('firstName').value || 'friend';
+      const activeMethod = document.querySelector('.pay-method.active').dataset.method;
+      const cardNum = document.getElementById('cardNum').value;
+      const last4 = cardNum.replace(/\s/g, '').slice(-4) || '4242';
+
+      // Update success card with real data
+      document.getElementById('successAmount').textContent = `P${total.toFixed(2)}`;
+      document.getElementById('successItemCount').textContent =
+        cart.reduce((s, i) => s + i.quantity, 0) + ' items';
+
+      let methodLabel = 'Visa •••• ' + last4;
+      if (activeMethod === 'cash') methodLabel = 'Cash on ' + (deliveryOption === 'delivery' ? 'delivery' : 'pickup');
+      if (activeMethod === 'mobile') methodLabel = 'Mobile Money';
+      document.getElementById('successMethod').textContent = methodLabel;
+
+      const action = deliveryOption === 'delivery' ? 'on its way' : 'being prepared for pickup';
+      const eta = deliveryOption === 'delivery' ? '30 minutes' : '10 minutes';
+      document.getElementById('successText').innerHTML =
+        `Thanks, <strong>${firstName}</strong>. Your order is ${action} and will be ready in <strong>about ${eta}</strong>.`;
+
+      document.getElementById('successOverlay').classList.add('show');
+      burstConfetti();
+
+      // Clear the cart now that the order is "complete"
+      localStorage.removeItem('cart');
+      localStorage.removeItem('deliveryOption');
+
+      // Optional: redirect to a separate success page after a few seconds
+      // Uncomment if you'd rather hand off to your existing success page:
+      // setTimeout(() => { window.location.href = 'Payment Successful.html'; }, 2500);
+    }, 1800);
+  }
+
+  function burstConfetti() {
+    const colors = ['#c87f3f', '#a05a25', '#c9a14a', '#6b8a4a', '#2b1d11'];
+    const card = document.querySelector('.success-card');
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + 120;
+
+    for (let i = 0; i < 24; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'confetti';
+      dot.style.background = colors[Math.floor(Math.random() * colors.length)];
+      dot.style.left = cx + 'px';
+      dot.style.top = cy + 'px';
+      document.body.appendChild(dot);
+
+      const angle = (Math.PI * 2 * i) / 24;
+      const dist = 100 + Math.random() * 80;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist - 50;
+
+      dot.animate([
+        { transform: 'translate(0,0) rotate(0)', opacity: 1 },
+        { transform: `translate(${dx}px, ${dy + 200}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+      ], { duration: 1400 + Math.random() * 600, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+
+      setTimeout(() => dot.remove(), 2000);
+    }
+  }
 </script>
 
 </body>
